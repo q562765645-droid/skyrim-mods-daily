@@ -97,6 +97,7 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            margin-bottom: 12px;
         }
         
         .filter-tab {
@@ -120,6 +121,43 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-color: transparent;
             color: #fff;
+        }
+        
+        .sort-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        
+        .sort-label {
+            color: #5b5b6e;
+            font-size: 0.85rem;
+        }
+        
+        .sort-btn {
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: 1px solid #2a2a3a;
+            background: transparent;
+            color: #8892b0;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sort-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .sort-btn.active {
+            background: #2a2a3a;
+            border-color: #667eea;
+            color: #667eea;
         }
         
         .view-toggle {
@@ -213,11 +251,47 @@
             display: none;
         }
         
+        .mod-image-wrap {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
         .mod-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
             border-bottom: 1px solid #2a2a3a;
+            transition: transform 0.5s ease;
+        }
+        
+        .mod-card:hover .mod-image {
+            transform: scale(1.05);
+        }
+        
+        .mod-image-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .mod-card:hover .mod-image-overlay {
+            opacity: 1;
+        }
+        
+        .mod-image-overlay-text {
+            background: rgba(102, 126, 234, 0.9);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
         
         .mod-image-placeholder {
@@ -290,6 +364,23 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+        
+        .mod-downloads {
+            color: #667eea;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .mod-version {
+            background: #0f3460;
+            color: #667eea;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
         
         .mod-link {
@@ -390,17 +481,58 @@
             font-size: 0.8rem;
         }
         
+        /* 空状态 */
         .no-results {
             text-align: center;
-            padding: 60px 20px;
-            color: #5b5b6e;
+            padding: 80px 20px;
         }
         
         .no-results-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
         }
         
+        .no-results h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .no-results p {
+            color: #5b5b6e;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        
+        .no-results .clear-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .no-results .clear-btn:hover {
+            opacity: 0.85;
+        }
+        
+        .empty-fav {
+            text-align: center;
+            padding: 40px 20px;
+            color: #5b5b6e;
+        }
+        
+        .empty-fav-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+        
+        /* 收藏区 */
         .favorites-section {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             border-radius: 16px;
@@ -432,6 +564,12 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .fav-card:hover {
+            border-color: #3a3a5a;
+            transform: translateY(-2px);
         }
         
         .fav-card img {
@@ -471,6 +609,92 @@
             color: #e74c3c;
         }
         
+        /* 灯箱 */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: #fff;
+            font-size: 2.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            background: none;
+            border: none;
+        }
+        
+        .lightbox-close:hover {
+            opacity: 1;
+        }
+        
+        .lightbox-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #8892b0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* 回到顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            z-index: 100;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        }
+        
         .footer {
             text-align: center;
             padding: 40px 20px;
@@ -491,6 +715,11 @@
             .controls-inner { padding: 16px; }
             .search-row { flex-direction: column; }
             .view-toggle { margin-left: 0; }
+            .sort-row { flex-direction: column; align-items: flex-start; }
+            .back-to-top {
+                bottom: 20px; right: 20px;
+                width: 40px; height: 40px;
+            }
         }
     </style>
 </head>
@@ -517,6 +746,13 @@
                 <button class="filter-tab" data-filter="内容">内容</button>
                 <button class="filter-tab" data-filter="favorites">❤️ 收藏</button>
             </div>
+            <div class="sort-row">
+                <span class="sort-label">排序：</span>
+                <button class="sort-btn active" data-sort="default">默认</button>
+                <button class="sort-btn" data-sort="endorsements">按推荐数</button>
+                <button class="sort-btn" data-sort="name">按名称</button>
+                <button class="sort-btn" data-sort="date">按日期</button>
+            </div>
             <div class="stats-bar">
                 <span>总收录：<span class="highlight" id="totalCount">0</span> 个 mod</span>
                 <span>今日推送：<span class="highlight" id="todayCount">0</span> 个</span>
@@ -529,7 +765,7 @@
         <div id="favoritesSection" style="display: none;">
             <div class="favorites-section">
                 <h2>❤️ 我的收藏</h2>
-                <div class="favorites-grid" id="favoritesGrid"></div>
+                <div id="favoritesContent"></div>
             </div>
         </div>
         
@@ -537,8 +773,9 @@
         
         <div class="no-results" id="noResults" style="display: none;">
             <div class="no-results-icon">🔍</div>
-            <p>没有找到匹配的 mod</p>
-            <p style="font-size: 0.85rem; margin-top: 8px;">试试其他关键词或清除筛选</p>
+            <h3>没有找到匹配的 mod</h3>
+            <p>试试其他关键词，或清除筛选条件</p>
+            <button class="clear-btn" onclick="clearFilters()">清除所有筛选</button>
         </div>
     </div>
     
@@ -547,6 +784,16 @@
         <p>🌙 每日推送 · 上古卷轴5 SE · Nexus Mods</p>
         <p>自动生成于 2026-06-17</p>
     </div>
+    
+    <!-- 灯箱 -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    
+    <!-- 回到顶部 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
 
     <script>
         // ===== 数据配置区（每次更新时修改这里） =====
@@ -557,7 +804,9 @@
                 url: "https://www.nexusmods.com/skyrimspecialedition/mods/12604",
                 image: "https://staticdelivery.nexusmods.com/mods/1704/images/thumbnails/12604/12604-1774356382-945468655.png",
                 category: "用户界面",
-                endorsements: "483,141",
+                endorsements: 483141,
+                downloads: 0,
+                version: "6.7",
                 date: "2026-06-17",
                 description: "SkyUI 是 Skyrim SE 最经典的界面优化 Mod，完全重构了原版冗长的菜单系统。新增鼠标键盘友好操作、物品分类排序、搜索过滤、装备对比等功能。最新 v6.7 支持所有现代游戏版本，几乎所有大型 Mod 都依赖它作为前置。",
                 reviews: [
@@ -571,7 +820,9 @@
                 url: "https://www.nexusmods.com/skyrimspecialedition/mods/174783",
                 image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/174783_1774214668.jpg",
                 category: "视觉与画面",
-                endorsements: "395",
+                endorsements: 395,
+                downloads: 0,
+                version: "1.0",
                 date: "2026-06-17",
                 description: "RELight 的官方灯光配置文件包，可配合 Community Shaders 或 ENB 使用。支持在游戏内实时编辑灯光（按 F1 调用 SKSE Menu Framework），兼容所有 Mod。2026 年 4 月入选 Nexus Mods of the Month 第二名。",
                 reviews: [
@@ -585,7 +836,9 @@
                 url: "https://www.nexusmods.com/skyrimspecialedition/mods/176230",
                 image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/176230_1775052782.jpg",
                 category: "用户界面",
-                endorsements: "844",
+                endorsements: 844,
+                downloads: 0,
+                version: "1.0",
                 date: "2026-06-17",
                 description: "将《晨风》的灵魂注入 Skyrim 的界面大修。在保持 Skyrim 清晰易读的基础上，用 Dunmer 文化的厚重历史感包裹 UI。2026 年 4 月 MOTM 以 61 票入选第二名。体积 87.7MB，包含 84 张预览图。",
                 reviews: [
@@ -599,7 +852,9 @@
                 url: "https://www.nexusmods.com/skyrimspecialedition/mods/175682",
                 image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/175682_1774652133.jpg",
                 category: "实用工具",
-                endorsements: "62",
+                endorsements: 62,
+                downloads: 0,
+                version: "1.0",
                 date: "2026-06-17",
                 description: "一款 SKSE 插件，允许通过 MCP 协议将外部 AI（如 Claude）接入游戏。AI 可以读取游戏状态、执行控制台命令、查询物品信息，甚至帮你排查任务 Bug。本质上是把 AI 变成你的'游戏助手'。",
                 reviews: [
@@ -613,7 +868,9 @@
                 url: "https://www.nexusmods.com/skyrimspecialedition/mods/120946",
                 image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/120946_1717365114.jpg",
                 category: "实用工具",
-                endorsements: "6,306",
+                endorsements: 6306,
+                downloads: 0,
+                version: "1.0",
                 date: "2026-06-17",
                 description: "动态网格补丁工具，自动为纹理 Mod 配置材质效果（视差、复杂材质等）。对 Mod 作者：只需发布纹理，无需预补丁网格。对玩家：一键解决纹理与网格的兼容问题。开源项目，持续更新。",
                 reviews: [
@@ -647,22 +904,84 @@
                 favs.push(modId);
             }
             saveFavorites(favs);
-            renderFavorites();
-            updateFavButtons();
-            updateStats();
+            renderAll();
         }
         
         function isFavorited(modId) {
             return getFavorites().includes(modId);
         }
         
-        // ===== 渲染函数 =====
+        // ===== 排序 =====
+        let currentSort = 'default';
+        
+        function getSortedMods(mods) {
+            const sorted = [...mods];
+            switch (currentSort) {
+                case 'endorsements':
+                    return sorted.sort((a, b) => b.endorsements - a.endorsements);
+                case 'name':
+                    return sorted.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+                case 'date':
+                    return sorted.sort((a, b) => b.date.localeCompare(a.date));
+                default:
+                    return sorted;
+            }
+        }
+        
+        // ===== 灯箱 =====
+        function openLightbox(imgSrc, caption) {
+            const box = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            const cap = document.getElementById('lightboxCaption');
+            img.src = imgSrc;
+            cap.textContent = caption;
+            box.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            const box = document.getElementById('lightbox');
+            box.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        
+        // ===== 回到顶部 =====
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+        
+        // ===== 渲染 =====
         function renderModCard(mod, index) {
             const fav = isFavorited(mod.id);
+            const downloads = mod.downloads > 0 ? `⬇ ${mod.downloads.toLocaleString()}` : '';
+            const version = mod.version ? `<span class="mod-version">v${mod.version}</span>` : '';
+            
             return `
-                <div class="mod-card" data-id="${mod.id}" data-category="${mod.category}" data-name="${mod.name}" data-desc="${mod.description}" data-reviews="${mod.reviews.map(r => r.text).join(' ')}" data-date="${mod.date}">
-                    <img src="${mod.image}" alt="${mod.name}" class="mod-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="mod-image-placeholder" style="display:none">📦</div>
+                <div class="mod-card" data-id="${mod.id}" data-category="${mod.category}" data-name="${mod.name}" data-desc="${mod.description}" data-reviews="${mod.reviews.map(r => r.text).join(' ')}" data-date="${mod.date}" data-endorsements="${mod.endorsements}">
+                    <div class="mod-image-wrap" onclick="openLightbox('${mod.image}', '${mod.name}')">
+                        <img src="${mod.image}" alt="${mod.name}" class="mod-image" onerror="this.style.display='none'; this.parentElement.querySelector('.mod-image-placeholder').style.display='flex';" loading="lazy">
+                        <div class="mod-image-placeholder" style="display:none">📦</div>
+                        <div class="mod-image-overlay">
+                            <span class="mod-image-overlay-text">🔍 查看大图</span>
+                        </div>
+                    </div>
                     <div class="mod-content">
                         <div class="mod-header-row">
                             <div style="display:flex;align-items:flex-start">
@@ -671,7 +990,9 @@
                                     <div class="mod-title">${mod.name}</div>
                                     <div class="mod-meta">
                                         <span class="mod-category">${mod.category}</span>
-                                        <span class="mod-endorsements">⭐ ${mod.endorsements}</span>
+                                        <span class="mod-endorsements">⭐ ${mod.endorsements.toLocaleString()}</span>
+                                        ${downloads ? `<span class="mod-downloads">${downloads}</span>` : ''}
+                                        ${version}
                                     </div>
                                 </div>
                             </div>
@@ -710,7 +1031,7 @@
             const sortedDates = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
             
             container.innerHTML = sortedDates.map(date => {
-                const mods = grouped[date];
+                const mods = getSortedMods(grouped[date]);
                 const isToday = date === '2026-06-17';
                 return `
                     <div class="section-title">
@@ -727,7 +1048,7 @@
         function renderFavorites() {
             const favs = getFavorites();
             const section = document.getElementById('favoritesSection');
-            const grid = document.getElementById('favoritesGrid');
+            const content = document.getElementById('favoritesContent');
             
             if (favs.length === 0) {
                 section.style.display = 'none';
@@ -736,16 +1057,20 @@
             
             const favMods = MOD_DATA.filter(m => favs.includes(m.id));
             
-            grid.innerHTML = favMods.map(mod => `
-                <div class="fav-card">
-                    <img src="${mod.image}" alt="${mod.name}" onerror="this.style.display='none'">
-                    <div class="fav-card-info">
-                        <div class="fav-card-title">${mod.name}</div>
-                        <div class="fav-card-meta">${mod.category} · ⭐ ${mod.endorsements}</div>
-                    </div>
-                    <button class="remove-fav" onclick="toggleFavorite('${mod.id}')">×</button>
+            content.innerHTML = `
+                <div class="favorites-grid">
+                    ${favMods.map(mod => `
+                        <div class="fav-card">
+                            <img src="${mod.image}" alt="${mod.name}" onerror="this.style.display='none'" loading="lazy">
+                            <div class="fav-card-info">
+                                <div class="fav-card-title">${mod.name}</div>
+                                <div class="fav-card-meta">${mod.category} · ⭐ ${mod.endorsements.toLocaleString()}</div>
+                            </div>
+                            <button class="remove-fav" onclick="toggleFavorite('${mod.id}')">×</button>
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
             
             section.style.display = 'block';
         }
@@ -764,6 +1089,13 @@
             document.getElementById('totalCount').textContent = MOD_DATA.length;
             document.getElementById('todayCount').textContent = MOD_DATA.filter(m => m.date === '2026-06-17').length;
             document.getElementById('favCount').textContent = getFavorites().length;
+        }
+        
+        function renderAll() {
+            renderSections();
+            renderFavorites();
+            updateStats();
+            filterMods();
         }
         
         // ===== 筛选与搜索 =====
@@ -811,6 +1143,16 @@
             });
         }
         
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+            document.querySelectorAll('.sort-btn').forEach(t => t.classList.remove('active'));
+            document.querySelector('.sort-btn[data-sort="default"]').classList.add('active');
+            currentSort = 'default';
+            renderAll();
+        }
+        
         // ===== 事件绑定 =====
         document.getElementById('searchInput').addEventListener('input', filterMods);
         
@@ -819,6 +1161,15 @@
                 document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
                 e.target.classList.add('active');
                 filterMods();
+            }
+        });
+        
+        document.querySelector('.sort-row').addEventListener('click', e => {
+            if (e.target.classList.contains('sort-btn')) {
+                document.querySelectorAll('.sort-btn').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                currentSort = e.target.dataset.sort;
+                renderAll();
             }
         });
         
@@ -834,9 +1185,7 @@
         });
         
         // ===== 初始化 =====
-        renderSections();
-        renderFavorites();
-        updateStats();
+        renderAll();
     </script>
 </body>
 </html>
