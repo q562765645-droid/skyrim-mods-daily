@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Mods - 上古卷轴5 SE 每日热门 Mod</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #0d0d12;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 40px 20px 60px;
+            text-align: center;
+            border-bottom: 1px solid #2a2a4a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23ffffff10"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .subtitle {
+            color: #8892b0;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .controls {
+            max-width: 1200px;
+            margin: -30px auto 20px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .controls-inner {
+            background: #1a1a24;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2a3a;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #2a2a3a;
+            background: #0f0f14;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-input::placeholder {
+            color: #5b5b6e;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #2a2a3a;
+            background: transparent;
+            color: #8892b0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        
+        .filter-tab:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+            color: #fff;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        
+        .view-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #2a2a3a;
+            background: transparent;
+            color: #8892b0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: #2a2a3a;
+            color: #fff;
+        }
+        
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            padding: 12px 0 0;
+            border-top: 1px solid #2a2a3a;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #5b5b6e;
+        }
+        
+        .stats-bar span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .stats-bar .highlight {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title .date-badge {
+            background: #2a2a3a;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #8892b0;
+        }
+        
+        .mod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .mod-card {
+            background: #1a1a24;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2a3a;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mod-card:hover {
+            border-color: #3a3a5a;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .mod-card.hidden {
+            display: none;
+        }
+        
+        .mod-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        
+        .mod-image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3a3a5a;
+            font-size: 3rem;
+            border-bottom: 1px solid #2a2a3a;
+        }
+        
+        .mod-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mod-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .mod-title {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        
+        .mod-number-badge {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+        
+        .mod-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .mod-category {
+            background: #2a2a3a;
+            padding: 3px 10px;
+            border-radius: 10px;
+            color: #8892b0;
+        }
+        
+        .mod-endorsements {
+            color: #f0a500;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .mod-link {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 0.8rem;
+        }
+        
+        .mod-link:hover {
+            text-decoration: underline;
+        }
+        
+        .mod-description {
+            color: #b0b0c0;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+        
+        .mod-reviews {
+            background: #0f0f14;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        
+        .review-title {
+            font-size: 0.8rem;
+            color: #5b5b6e;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .review-quote {
+            border-left: 3px solid #667eea;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-style: italic;
+            color: #a0a0b0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .review-quote:last-child {
+            margin-bottom: 0;
+        }
+        
+        .review-author {
+            color: #5b5b6e;
+            font-style: normal;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .mod-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #2a2a3a;
+        }
+        
+        .fav-btn {
+            background: transparent;
+            border: 1px solid #2a2a3a;
+            color: #5b5b6e;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .fav-btn:hover {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+        
+        .fav-btn.favorited {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: #fff;
+        }
+        
+        .fav-btn.favorited:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+        }
+        
+        .date-label {
+            color: #5b5b6e;
+            font-size: 0.8rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #5b5b6e;
+        }
+        
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        .favorites-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            border: 1px solid #2a2a4a;
+        }
+        
+        .favorites-section h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .fav-card {
+            background: #1a1a24;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #2a2a3a;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .fav-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .fav-card-info {
+            flex: 1;
+        }
+        
+        .fav-card-title {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .fav-card-meta {
+            color: #5b5b6e;
+            font-size: 0.8rem;
+        }
+        
+        .fav-card .remove-fav {
+            background: none;
+            border: none;
+            color: #5b5b6e;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+        
+        .fav-card .remove-fav:hover {
+            color: #e74c3c;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #5b5b6e;
+            font-size: 0.85rem;
+        }
+        
+        .footer .divider {
+            width: 40px;
+            height: 1px;
+            background: #2a2a3a;
+            margin: 0 auto 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .mod-grid { grid-template-columns: 1fr; }
+            .controls-inner { padding: 16px; }
+            .search-row { flex-direction: column; }
+            .view-toggle { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📦 Nexus Mods 每日热门</h1>
+        <div class="subtitle">上古卷轴5：天际特别版 · Skyrim SE</div>
+    </div>
+    
+    <div class="controls">
+        <div class="controls-inner">
+            <div class="search-row">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索 mod 名称、描述、评价...">
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">⊞</button>
+                    <button class="view-btn" data-view="list">☰</button>
+                </div>
+            </div>
+            <div class="filter-tabs" id="filterTabs">
+                <button class="filter-tab active" data-filter="all">全部</button>
+                <button class="filter-tab" data-filter="用户界面">用户界面</button>
+                <button class="filter-tab" data-filter="视觉与画面">视觉与画面</button>
+                <button class="filter-tab" data-filter="实用工具">实用工具</button>
+                <button class="filter-tab" data-filter="内容">内容</button>
+                <button class="filter-tab" data-filter="favorites">❤️ 收藏</button>
+            </div>
+            <div class="stats-bar">
+                <span>总收录：<span class="highlight" id="totalCount">0</span> 个 mod</span>
+                <span>今日推送：<span class="highlight" id="todayCount">0</span> 个</span>
+                <span>已收藏：<span class="highlight" id="favCount">0</span> 个</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div id="favoritesSection" style="display: none;">
+            <div class="favorites-section">
+                <h2>❤️ 我的收藏</h2>
+                <div class="favorites-grid" id="favoritesGrid"></div>
+            </div>
+        </div>
+        
+        <div id="modSections"></div>
+        
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <p>没有找到匹配的 mod</p>
+            <p style="font-size: 0.85rem; margin-top: 8px;">试试其他关键词或清除筛选</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="divider"></div>
+        <p>🌙 每日推送 · 上古卷轴5 SE · Nexus Mods</p>
+        <p>自动生成于 2026-06-17</p>
+    </div>
+
+    <script>
+        // ===== 数据配置区（每次更新时修改这里） =====
+        const MOD_DATA = [
+            {
+                id: "MOD-260617-01",
+                name: "SkyUI",
+                url: "https://www.nexusmods.com/skyrimspecialedition/mods/12604",
+                image: "https://staticdelivery.nexusmods.com/mods/1704/images/thumbnails/12604/12604-1774356382-945468655.png",
+                category: "用户界面",
+                endorsements: "483,141",
+                date: "2026-06-17",
+                description: "SkyUI 是 Skyrim SE 最经典的界面优化 Mod，完全重构了原版冗长的菜单系统。新增鼠标键盘友好操作、物品分类排序、搜索过滤、装备对比等功能。最新 v6.7 支持所有现代游戏版本，几乎所有大型 Mod 都依赖它作为前置。",
+                reviews: [
+                    { text: "没有 SkyUI 我根本不会玩老滚5。原版的库存管理简直是灾难，这个 Mod 把一切都理顺了。", author: "社区共识" },
+                    { text: "15,323 条帖子讨论，被视为 PC 版必装前置，地位等同于 SKSE。", author: "社区统计" }
+                ]
+            },
+            {
+                id: "MOD-260617-02",
+                name: "RELight - Official Light Addon",
+                url: "https://www.nexusmods.com/skyrimspecialedition/mods/174783",
+                image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/174783_1774214668.jpg",
+                category: "视觉与画面",
+                endorsements: "395",
+                date: "2026-06-17",
+                description: "RELight 的官方灯光配置文件包，可配合 Community Shaders 或 ENB 使用。支持在游戏内实时编辑灯光（按 F1 调用 SKSE Menu Framework），兼容所有 Mod。2026 年 4 月入选 Nexus Mods of the Month 第二名。",
+                reviews: [
+                    { text: "灯光配置可以直接在游戏里调整，不用反复退出编辑，很方便。和 USSEP 一起用效果更好。", author: "社区反馈" },
+                    { text: "154 条帖子，作为新上线的灯光工具，被评价为'易用且兼容性好'。", author: "社区统计" }
+                ]
+            },
+            {
+                id: "MOD-260617-03",
+                name: "Vel'dun UI",
+                url: "https://www.nexusmods.com/skyrimspecialedition/mods/176230",
+                image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/176230_1775052782.jpg",
+                category: "用户界面",
+                endorsements: "844",
+                date: "2026-06-17",
+                description: "将《晨风》的灵魂注入 Skyrim 的界面大修。在保持 Skyrim 清晰易读的基础上，用 Dunmer 文化的厚重历史感包裹 UI。2026 年 4 月 MOTM 以 61 票入选第二名。体积 87.7MB，包含 84 张预览图。",
+                reviews: [
+                    { text: "不像其他 UI 大修那么花哨，Vel'dun 有种遗物般的质感。喜欢晨风氛围的人会很喜欢。", author: "评选评论" },
+                    { text: "用户评价普遍称赞其'独特的美学风格'，入选当月官方推荐榜单。", author: "社区统计" }
+                ]
+            },
+            {
+                id: "MOD-260617-04",
+                name: "SkyLink AI",
+                url: "https://www.nexusmods.com/skyrimspecialedition/mods/175682",
+                image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/175682_1774652133.jpg",
+                category: "实用工具",
+                endorsements: "62",
+                date: "2026-06-17",
+                description: "一款 SKSE 插件，允许通过 MCP 协议将外部 AI（如 Claude）接入游戏。AI 可以读取游戏状态、执行控制台命令、查询物品信息，甚至帮你排查任务 Bug。本质上是把 AI 变成你的'游戏助手'。",
+                reviews: [
+                    { text: "概念很酷，像 Skyrim 里的贾维斯。不过需要烧 token，建议用免费账号或本地 Ollama。", author: "作者建议" },
+                    { text: "社区评价两极：一部分人认为'token 成本太高不划算'，另一部分觉得'对于不擅长控制台的玩家很友好'。", author: "社区讨论" }
+                ]
+            },
+            {
+                id: "MOD-260617-05",
+                name: "PGPatcher",
+                url: "https://www.nexusmods.com/skyrimspecialedition/mods/120946",
+                image: "https://staticdelivery.nexusmods.com/mods/1704/images/headers/120946_1717365114.jpg",
+                category: "实用工具",
+                endorsements: "6,306",
+                date: "2026-06-17",
+                description: "动态网格补丁工具，自动为纹理 Mod 配置材质效果（视差、复杂材质等）。对 Mod 作者：只需发布纹理，无需预补丁网格。对玩家：一键解决纹理与网格的兼容问题。开源项目，持续更新。",
+                reviews: [
+                    { text: "装完 PBR 纹理后必跑的工具。以前手动改网格要花几小时，现在点一下就行。", author: "社区反馈" },
+                    { text: "Linux 用户也成功在 Proton 环境下运行。被评价为'现代画质 Mod 的必备工具链一环'。", author: "社区统计" }
+                ]
+            }
+        ];
+        
+        // ===== 收藏功能（localStorage） =====
+        const FAV_KEY = 'nexus_mods_favorites';
+        
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+            } catch {
+                return [];
+            }
+        }
+        
+        function saveFavorites(favs) {
+            localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+        }
+        
+        function toggleFavorite(modId) {
+            const favs = getFavorites();
+            const idx = favs.indexOf(modId);
+            if (idx >= 0) {
+                favs.splice(idx, 1);
+            } else {
+                favs.push(modId);
+            }
+            saveFavorites(favs);
+            renderFavorites();
+            updateFavButtons();
+            updateStats();
+        }
+        
+        function isFavorited(modId) {
+            return getFavorites().includes(modId);
+        }
+        
+        // ===== 渲染函数 =====
+        function renderModCard(mod, index) {
+            const fav = isFavorited(mod.id);
+            return `
+                <div class="mod-card" data-id="${mod.id}" data-category="${mod.category}" data-name="${mod.name}" data-desc="${mod.description}" data-reviews="${mod.reviews.map(r => r.text).join(' ')}" data-date="${mod.date}">
+                    <img src="${mod.image}" alt="${mod.name}" class="mod-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="mod-image-placeholder" style="display:none">📦</div>
+                    <div class="mod-content">
+                        <div class="mod-header-row">
+                            <div style="display:flex;align-items:flex-start">
+                                <div class="mod-number-badge">${index + 1}</div>
+                                <div>
+                                    <div class="mod-title">${mod.name}</div>
+                                    <div class="mod-meta">
+                                        <span class="mod-category">${mod.category}</span>
+                                        <span class="mod-endorsements">⭐ ${mod.endorsements}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${mod.url}" target="_blank" class="mod-link">🔗 查看 Nexus 原址</a>
+                        <div class="mod-description">${mod.description}</div>
+                        <div class="mod-reviews">
+                            <div class="review-title">用户评价</div>
+                            ${mod.reviews.map(r => `
+                                <div class="review-quote">
+                                    <p>${r.text}</p>
+                                    <span class="review-author">— ${r.author}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mod-actions">
+                            <button class="fav-btn ${fav ? 'favorited' : ''}" onclick="toggleFavorite('${mod.id}')">
+                                ${fav ? '❤️ 已收藏' : '🤍 收藏'}
+                            </button>
+                            <span class="date-label">${mod.date}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderSections() {
+            const container = document.getElementById('modSections');
+            const grouped = {};
+            
+            MOD_DATA.forEach(mod => {
+                if (!grouped[mod.date]) grouped[mod.date] = [];
+                grouped[mod.date].push(mod);
+            });
+            
+            const sortedDates = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
+            
+            container.innerHTML = sortedDates.map(date => {
+                const mods = grouped[date];
+                const isToday = date === '2026-06-17';
+                return `
+                    <div class="section-title">
+                        ${isToday ? '📌' : '📅'} ${isToday ? '今日推送' : '历史推送'}
+                        <span class="date-badge">${date}</span>
+                    </div>
+                    <div class="mod-grid" data-date="${date}">
+                        ${mods.map((mod, i) => renderModCard(mod, i)).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderFavorites() {
+            const favs = getFavorites();
+            const section = document.getElementById('favoritesSection');
+            const grid = document.getElementById('favoritesGrid');
+            
+            if (favs.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            
+            const favMods = MOD_DATA.filter(m => favs.includes(m.id));
+            
+            grid.innerHTML = favMods.map(mod => `
+                <div class="fav-card">
+                    <img src="${mod.image}" alt="${mod.name}" onerror="this.style.display='none'">
+                    <div class="fav-card-info">
+                        <div class="fav-card-title">${mod.name}</div>
+                        <div class="fav-card-meta">${mod.category} · ⭐ ${mod.endorsements}</div>
+                    </div>
+                    <button class="remove-fav" onclick="toggleFavorite('${mod.id}')">×</button>
+                </div>
+            `).join('');
+            
+            section.style.display = 'block';
+        }
+        
+        function updateFavButtons() {
+            document.querySelectorAll('.fav-btn').forEach(btn => {
+                const card = btn.closest('.mod-card');
+                const id = card.dataset.id;
+                const fav = isFavorited(id);
+                btn.className = `fav-btn ${fav ? 'favorited' : ''}`;
+                btn.innerHTML = fav ? '❤️ 已收藏' : '🤍 收藏';
+            });
+        }
+        
+        function updateStats() {
+            document.getElementById('totalCount').textContent = MOD_DATA.length;
+            document.getElementById('todayCount').textContent = MOD_DATA.filter(m => m.date === '2026-06-17').length;
+            document.getElementById('favCount').textContent = getFavorites().length;
+        }
+        
+        // ===== 筛选与搜索 =====
+        function filterMods() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+            const cards = document.querySelectorAll('.mod-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                const category = card.dataset.category;
+                const name = card.dataset.name.toLowerCase();
+                const desc = card.dataset.desc.toLowerCase();
+                const reviews = card.dataset.reviews.toLowerCase();
+                const fav = isFavorited(id);
+                
+                const matchSearch = !search || name.includes(search) || desc.includes(search) || reviews.includes(search);
+                const matchFilter = activeFilter === 'all' || 
+                                   (activeFilter === 'favorites' && fav) ||
+                                   category === activeFilter;
+                
+                if (matchSearch && matchFilter) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            // 显示/隐藏无结果提示
+            document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+            
+            // 显示/隐藏日期分组标题
+            document.querySelectorAll('.mod-grid').forEach(grid => {
+                const visibleCards = grid.querySelectorAll('.mod-card:not(.hidden)');
+                const sectionTitle = grid.previousElementSibling;
+                if (visibleCards.length === 0) {
+                    grid.style.display = 'none';
+                    if (sectionTitle) sectionTitle.style.display = 'none';
+                } else {
+                    grid.style.display = 'grid';
+                    if (sectionTitle) sectionTitle.style.display = 'flex';
+                }
+            });
+        }
+        
+        // ===== 事件绑定 =====
+        document.getElementById('searchInput').addEventListener('input', filterMods);
+        
+        document.getElementById('filterTabs').addEventListener('click', e => {
+            if (e.target.classList.contains('filter-tab')) {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                filterMods();
+            }
+        });
+        
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const view = btn.dataset.view;
+                document.querySelectorAll('.mod-grid').forEach(grid => {
+                    grid.style.gridTemplateColumns = view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(350px, 1fr))';
+                });
+            });
+        });
+        
+        // ===== 初始化 =====
+        renderSections();
+        renderFavorites();
+        updateStats();
+    </script>
+</body>
+</html>
