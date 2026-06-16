@@ -1,0 +1,29 @@
+{
+  "stm": {
+    "count": 1,
+    "last_ts": "2026-06-07T11:35:44.721222",
+    "last_sessions": 1,
+    "last_messages": 3,
+    "last_chars": 3414
+  },
+  "diary": {
+    "count": 15,
+    "last_ts": "2026-06-16T03:54:19.093428",
+    "last_day": 8,
+    "last_sessions": 1,
+    "last_messages": 2,
+    "last_filename": "day8-2026-06-14-turned_down_at_2am.md",
+    "last_latency_s": 19.0,
+    "last_skip": "messages<3"
+  },
+  "compact": {
+    "count": 15,
+    "last_ts": "2026-06-16T03:54:19.238088",
+    "last_invoke": 7,
+    "last_sessions": 9,
+    "last_messages": 34,
+    "last_latency_s": 11.3,
+    "last_model": "k2p6",
+    "last_skip": "stm_hash_unchanged"
+  }
+}
